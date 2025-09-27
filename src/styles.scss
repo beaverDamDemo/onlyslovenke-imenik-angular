@@ -1,20 +1,19 @@
-
 // Include theming for Angular Material with `mat.theme()`.
 // This Sass mixin will define CSS variables that are used for styling Angular Material
 // components according to the Material 3 design spec.
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
+@import "tailwindcss";
 
 html {
-  @include mat.theme((
-    color: (
-      primary: mat.$magenta-palette,
-      tertiary: mat.$violet-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+  @include mat.theme((color: (primary: mat.$magenta-palette,
+        tertiary: mat.$violet-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    ));
+  color-scheme: light;
 }
 
 body {
@@ -33,7 +32,77 @@ body {
   // Reset the user agent margin.
   margin: 0;
 }
+
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+::-moz-selection {
+  background: #ffef40;
+}
+
+::selection {
+  background: #ffef40;
+}
+
+html {
+  color-scheme: light;
+  @include mat.theme((color: mat.$cyan-palette, ))
+}
+
+html.dark-mode {
+  color-scheme: dark;
+  @include mat.theme((color: mat.$cyan-palette, ))
+}
+
+::view-transition-old(root) {
+  animation: fadeOut 0.25s ease forwards;
+}
+
+::view-transition-new(root) {
+  animation: fadeIn 0.25s ease forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.snackbar-success .mdc-snackbar__surface.mat-mdc-snackbar-surface {
+  --mdc-snackbar-container-color: #43a047; // Green 600
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mat-snack-bar-button-color: #fff;
+}
+
+.snackbar-error .mdc-snackbar__surface.mat-mdc-snackbar-surface {
+  --mdc-snackbar-container-color: #d32f2f;
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mat-snack-bar-button-color: #fff;
+}
