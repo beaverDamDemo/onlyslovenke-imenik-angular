@@ -13,7 +13,7 @@ export class AuthService {
   currentUserSig = signal<any | null>(undefined);
   private stateItem: BehaviorSubject<any | null> = new BehaviorSubject(null);
   stateItem$: Observable<any | null> = this.stateItem.asObservable();
-
+  userRole: string = 'admin';
   private API_URL = environment.API_URL;
 
   constructor(private http: HttpClient, private router: Router) {

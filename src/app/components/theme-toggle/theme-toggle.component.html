@@ -1,0 +1,16 @@
+<div class="flex gap-2">
+  <button class="btn btn-outline btn-icon" (click)="toggleTheme()">
+    @if (themeService.themeSig() === 'light') {
+    <app-icon-moon class="h-4 w-4"></app-icon-moon>
+    }
+    @if (themeService.themeSig() === 'dark') {
+    <app-icon-sun class="h-4 w-4"></app-icon-sun>
+    }
+  </button>
+
+  <div class="relative dropdown">
+    <button class="btn btn-outline btn-icon" [attr.aria-expanded]="true" (click)="toggleColorScheme()">
+      <app-icon-palette class="h-4 w-4"></app-icon-palette>
+    </button>
+  </div>
+</div>

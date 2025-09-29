@@ -1,42 +1,83 @@
 <div class="min-h-screen flex flex-col">
-  <header>
-    <mat-toolbar color="primary" class="h-16 flex justify-between items-center px-4 shadow-md">
-      <a routerLink="/" class="text-lg font-semibold">
-        <img src="logo-transparent-bgr.png" alt="Logo" class="inline h-8 ml-2" />
-      </a>
-      <div class="flex items-center gap-2">
-        <button mat-stroked-button routerLink="/pilot-tower-sockets" routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }" [disabled]="isActive('/pilot-tower-sockets')">
-          Socket example
-        </button>
+  <div class="min-h-screen bg-background relative overflow-hidden">
+    <!-- Decorative shapes -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-20 left-10 w-32 h-32 theme-shape-1 rounded-full blur-xl"></div>
+      <div class="absolute top-1/4 right-20 w-24 h-24 theme-shape-2 rotate-45 blur-lg"></div>
+      <div class="absolute bottom-20 left-1/4 w-40 h-20 theme-shape-1 rounded-full blur-2xl"></div>
+      <div class="absolute bottom-1/3 right-1/3 w-28 h-28 theme-shape-2 rounded-lg rotate-12 blur-xl"></div>
+      <div class="absolute top-1/2 left-1/2 w-36 h-36 theme-shape-3 rounded-full blur-3xl"></div>
+    </div>
 
-        @if (authService.currentUserSig() === null) {
-        <button mat-flat-button routerLink="/login" routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }" [disabled]="isActive('/login')">
-          Login
-        </button>
-        }
-        @else if (authService.currentUserSig()) {
-        <button mat-stroked-button routerLink="/todos" routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }" [disabled]="isActive('/todos')">
-          Todos
-        </button>
-        <button mat-stroked-button routerLink="/profile" routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }" [disabled]="isActive('/profile')">
-          {{ authService.currentUserSig() }}'s Profile
-        </button>
-        <button mat-stroked-button (click)="authService.logout()">
-          Logout
-        </button>
-        }
-        <button class="p-2 flex" mat-icon-button (click)="toggleTheme()" aria-label="Toggle theme">
-          <mat-icon>
-            {{ currentTheme === 'dark' ? 'dark_mode' : 'light_mode' }}
-          </mat-icon>
-        </button>
+    <!-- Header -->
+    <header class="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50 relative">
+      <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+        <h1 class="text-2xl font-bold theme-gradient-text">Slovenian OF Directory</h1>
+        <div class="flex items-center gap-4">
+          <span class="text-sm text-muted-foreground">Welcome, {{ authService.currentUserSig() }}</span>
+          <app-theme-toggle></app-theme-toggle>
+          <button
+            class="btn btn-outline btn-sm px-4 py-2 border border-gray-500 text-gray-500 rounded hover:bg-gray-100"
+            (click)="logout()">
+            <app-icon-log-out class="h-4 w-4 mr-2"></app-icon-log-out>
+            Logout
+          </button>
+        </div>
       </div>
-    </mat-toolbar>
-  </header>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="border-b bg-card/30 backdrop-blur-sm relative">
+      <div class="container mx-auto px-4">
+        <div class="flex space-x-8">
+          <button [ngClass]="{ 'btn-default': activeTab === 'directory', 'btn-ghost': activeTab !== 'directory' }"
+            class="btn btn-version-2" (click)="setActiveTab('directory')">
+            <app-icon-users class="h-4 w-4 mr-2"></app-icon-users>
+            Directory
+          </button>
+
+          <button [ngClass]="{ 'btn-default': activeTab === 'favorites', 'btn-ghost': activeTab !== 'favorites' }"
+            class="btn btn-version-2" (click)="setActiveTab('favorites')">
+            <app-icon-heart class="h-4 w-4 mr-2"></app-icon-heart>
+            Favorites
+          </button>
+
+          <button [ngClass]="{ 'btn-default': activeTab === 'add', 'btn-ghost': activeTab !== 'add' }"
+            class="btn btn-version-2" (click)="setActiveTab('add')">
+            <app-icon-plus class="h-4 w-4 mr-2"></app-icon-plus>
+            Add Performer
+          </button>
+
+          <button *ngIf="authService.userRole === 'admin'"
+            [ngClass]="{ 'btn-default': activeTab === 'admin', 'btn-ghost': activeTab !== 'admin' }"
+            class="btn btn-version-2" (click)="setActiveTab('admin')">
+            <app-icon-shield class="h-4 w-4 mr-2"></app-icon-shield>
+            Admin
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8 relative">
+      @if (activeTab === 'directory') {
+      <app-performer-directory></app-performer-directory>
+      }
+
+      @if (activeTab === 'favorites') {
+      <app-favorites-view></app-favorites-view>
+      }
+
+      @if (activeTab === 'add') {
+      <app-add-performer-form></app-add-performer-form>
+      }
+
+      @if (activeTab === 'admin' && authService.userRole === 'admin') {
+      <app-admin-dashboard></app-admin-dashboard>
+      }
+    </main>
+
+  </div>
+
 
   <main class="flex-grow p-3">
     @if (loading) {
@@ -49,7 +90,7 @@
     @if (isProduction) {
     <mat-toolbar color="tertiary" class="h-14 flex items-center justify-center">
       <span class="text-xs text-gray-500">
-        &copy; {{ currentYear }} Zdenko Vuk
+        &copy; {{ currentYear }}
       </span>
     </mat-toolbar>
     }
@@ -57,7 +98,7 @@
     <mat-toolbar color="warn"
       class="h-14 flex items-center justify-center border-2 border-dashed border-violet-600 bg-yellow-500">
       <span class="text-xs text-violet-600 font-bold">
-        DEVELOPMENT MODE &copy; {{ currentYear }} Zdenko Vuk
+        DEVELOPMENT MODE &copy; {{ currentYear }}
       </span>
     </mat-toolbar>
     }

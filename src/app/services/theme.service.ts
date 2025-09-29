@@ -1,44 +1,42 @@
-import { DOCUMENT, inject, Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { DOCUMENT, inject, Injectable, signal } from '@angular/core';
 
 export type Theme = 'light' | 'dark';
+export type ColorScheme = 'yellow-purple' | 'cyan-coral';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ThemeService {
   private readonly document = inject(DOCUMENT);
-  private $currentTheme = new BehaviorSubject<'light' | 'dark'>('light');
-  theme$ = this.$currentTheme.asObservable();
+
+  themeSig = signal<Theme>('light');
+  colorSchemeSig = signal<ColorScheme>('yellow-purple');
 
   constructor() {
-    const theme = this.getThemeFromLocalStorage();
-    this.setTheme(theme);
-  }
+    const savedTheme = (localStorage.getItem('theme') as Theme) || 'light';
+    const savedColorScheme = (localStorage.getItem('colorScheme') as ColorScheme) || 'yellow-purple';
 
-  toggleTheme() {
-    if (this.$currentTheme.value === 'light') {
-      this.setTheme('dark');
-    } else {
-      this.setTheme('light');
-    }
+    this.setTheme(savedTheme);
+    this.setColorScheme(savedColorScheme);
   }
 
   setTheme(theme: Theme) {
-    this.$currentTheme.next(theme);
-    if (theme === 'dark') {
-      this.document.documentElement.classList.add('dark-mode');
-    } else {
-      this.document.documentElement.classList.remove('dark-mode');
-    }
-    this.setThemeInLocalStorage(theme);
+    this.themeSig.set(theme);
+    this.document.documentElement.classList.toggle('dark', theme === 'dark');
+    localStorage.setItem('theme', theme);
   }
 
-  getThemeFromLocalStorage(): Theme {
-    return localStorage.getItem('preferred-theme') as Theme ?? 'light';
+  toggleTheme() {
+    const newTheme = this.themeSig() === 'light' ? 'dark' : 'light';
+    this.setTheme(newTheme);
   }
 
-  setThemeInLocalStorage(theme: Theme) {
-    localStorage.setItem('preferred-theme', theme);
+  setColorScheme(scheme: ColorScheme) {
+    this.colorSchemeSig.set(scheme);
+    this.document.documentElement.setAttribute('data-color-scheme', scheme);
+    localStorage.setItem('colorScheme', scheme);
+  }
+
+  toggleColorScheme() {
+    const newScheme = this.colorSchemeSig() === 'yellow-purple' ? 'cyan-coral' : 'yellow-purple';
+    this.setColorScheme(newScheme);
   }
 }
