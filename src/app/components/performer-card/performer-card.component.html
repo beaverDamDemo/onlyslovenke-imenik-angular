@@ -1,13 +1,16 @@
-<div class="group hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+<div
+  class="group hover:shadow-lg transition-all duration-300 relative overflow-hidden rounded-lg border border-gray-300">
   @if (showDealBadge && hasDiscount) {
   <div class="absolute top-2 left-2 z-10">
     <span class="badge bg-gradient-to-r from-yellow-500 to-orange-500 text-white">DEAL</span>
   </div>
   }
 
-  <button class="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity"
+  <button class="absolute top-2 right-2 z-10 cursor-pointer hover:scale-110 transition-transform duration-200"
     (click)="handleFavoriteToggle()">
-    <app-icon-heart class="h-4 w-4" [ngClass]="{ 'fill-red-500 text-red-500': isFavorite }"></app-icon-heart>
+    <app-icon-heart class="h-4 w-4 transition-colors duration-200" [ngClass]="isFavorite
+      ? 'text-red-600 fill-red-600'
+      : 'text-black fill-black dark:text-white dark:fill-white'"></app-icon-heart>
   </button>
 
   <div class="p-4">
@@ -40,7 +43,9 @@
 
     <div class="flex flex-wrap gap-1 mb-4">
       @for (tag of performer.tags.slice(0, 3); track tag) {
-      <span class="badge text-xs">{{ tag }}</span>
+      <span data-slot="badge"
+        class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent bg-secondary text-secondary-foreground [a&amp;]:hover:bg-secondary/90 text-xs">{{
+        tag }}</span>
       }
       @if (performer.tags.length > 3) {
       <span class="badge text-xs">+{{ performer.tags.length - 3 }}</span>
@@ -64,7 +69,7 @@
   </div>
 
   <div class="p-4 pt-0">
-    <button class="btn w-full" (click)="handleVisitProfile()">
+    <button class="btn w-full btn-default btn-version-2 btn-rounded" (click)="handleVisitProfile()">
       <app-icon-external-link class="h-4 w-4 mr-2"></app-icon-external-link>
       Visit Profile
     </button>

@@ -25,7 +25,7 @@ export const dataStore = {
       {
         id: 1,
         name: 'Lana Luxe',
-        avatarUrl: '/avatars/lana.png',
+        avatarUrl: 'slovenian-woman-portrait-blonde.jpg',
         description: 'Fitness enthusiast with a love for ink.',
         location: 'Ljubljana',
         tags: ['fitness', 'tattoos'],
@@ -37,7 +37,7 @@ export const dataStore = {
       {
         id: 2,
         name: 'Maja Moon',
-        avatarUrl: '/avatars/maja.png',
+        avatarUrl: 'slovenian-woman-portrait-brunette.jpg',
         description: 'Cosplayer and gamer girl with a playful vibe.',
         location: 'Maribor',
         tags: ['cosplay', 'gaming'],
@@ -52,7 +52,7 @@ export const dataStore = {
       {
         id: 3,
         name: 'Nina Noir',
-        avatarUrl: '/avatars/nina.png',
+        avatarUrl: 'slovenian-woman-portrait-dark-hair.jpg',
         description: 'Fashion-forward creator with a bold aesthetic.',
         location: 'Koper',
         tags: ['fashion', 'makeup'],
@@ -64,7 +64,7 @@ export const dataStore = {
       {
         id: 4,
         name: 'Eva Ember',
-        avatarUrl: '/avatars/eva.png',
+        avatarUrl: 'slovenian-woman-portrait-redhead.jpg',
         description: 'Alternative style and fiery personality.',
         location: 'Ljubljana',
         tags: ['tattoos', 'alt'],

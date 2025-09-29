@@ -398,19 +398,16 @@ html.dark-mode {
   padding-right: 0.75rem;
 }
 
-
 .btn.btn-outline {
-  border-radius: 0;
   border-bottom-width: 2px;
   border-bottom-color: transparent;
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  border-width: 1px;
-  border-color: #6b7280;
   color: #6b7280;
-  border-radius: 0.25rem;
+  border: 1 px solid var(--border);
+  border-radius: var(--radius);
   transition: background-color 0.2s ease;
   display: flex;
   align-items: center;
@@ -418,4 +415,9 @@ html.dark-mode {
 
 .btn.btn-outline:hover {
   background-color: #f3f4f6;
+}
+
+.btn-rounded {
+  border: 1 px solid var(--border);
+  border-radius: var(--radius);
 }
