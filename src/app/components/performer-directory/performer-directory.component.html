@@ -1,1 +1,91 @@
-<p>performer-directory works!</p>
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold theme-gradient-text">Performer Directory</h1>
+      <p class="text-muted-foreground mt-2">Discover amazing Slovenian OnlyFans creators</p>
+    </div>
+    <div class="flex items-center gap-4">
+      <span class="badge text-sm">
+        <app-icon-users class="h-4 w-4 mr-1"></app-icon-users>
+        {{ performers.length }} Performers
+      </span>
+      <span class="badge text-sm">
+        <app-icon-percent class="h-4 w-4 mr-1"></app-icon-percent>
+        {{ discountedPerformers.length }} Deals
+      </span>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="w-full">
+    <div class="grid grid-cols-2 w-full">
+      <button [class.active]="activeTab === 'all'" (click)="setActiveTab('all')" class="btn-version-2">
+        All Performers
+      </button>
+      <button [class.active]="activeTab === 'deals'" (click)="setActiveTab('deals')" class="btn-version-2">
+        Deals & Discounts ({{ discountedPerformers.length }})
+      </button>
+    </div>
+
+    @if (activeTab === 'all') {
+    <div class="space-y-6">
+      <!-- <app-directory-filters [filters]="filters" [availableTags]="availableTags"
+        [availableLocations]="availableLocations" (filtersChange)="handleFiltersChange($event)"
+        (clearFilters)="clearFilters()"></app-directory-filters> -->
+
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <p class="text-sm text-muted-foreground">
+            Showing {{ filteredPerformers.length }} of {{ performers.length }} performers
+          </p>
+          @if (filters.search || filters.tags.length || filters.location || filters.showDiscounted) {
+          <button class="btn-outline btn-sm" (click)="clearFilters()">Clear Filters</button>
+          }
+        </div>
+
+        @if (filteredPerformers.length === 0) {
+        <div class="text-center py-12">
+          <p class="text-muted-foreground">No performers found matching your criteria.</p>
+          <button class="btn-outline mt-4" (click)="clearFilters()">Clear Filters</button>
+        </div>
+        }
+
+        @if (filteredPerformers.length > 0) {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          @for (performer of filteredPerformers; track performer.id) {
+          <app-performer-card [performer]="performer"></app-performer-card>
+          }
+        </div>
+        }
+      </div>
+    </div>
+    }
+
+    @if (activeTab === 'deals') {
+    <div class="space-y-6">
+      <div class="bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg p-6 border">
+        <h2 class="text-xl font-semibold mb-2">Special Deals & Discounts</h2>
+        <p class="text-muted-foreground">
+          Find the best deals from Slovenian OnlyFans creators. Limited time offers!
+        </p>
+      </div>
+
+      @if (discountedPerformers.length === 0) {
+      <div class="text-center py-12">
+        <p class="text-muted-foreground">No special deals available at the moment.</p>
+        <p class="text-sm text-muted-foreground mt-2">Check back later for new offers!</p>
+      </div>
+      }
+
+      @if (filteredPerformers.length > 0) {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        @for (performer of filteredPerformers; track performer.id) {
+        <app-performer-card [performer]="performer" [showDealBadge]="true"></app-performer-card>
+        }
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>

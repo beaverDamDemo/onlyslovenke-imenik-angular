@@ -1,0 +1,72 @@
+<div class="group hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+  @if (showDealBadge && hasDiscount) {
+  <div class="absolute top-2 left-2 z-10">
+    <span class="badge bg-gradient-to-r from-yellow-500 to-orange-500 text-white">DEAL</span>
+  </div>
+  }
+
+  <button class="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity"
+    (click)="handleFavoriteToggle()">
+    <!-- <app-icon-heart class="h-4 w-4" [ngClass]="{ 'fill-red-500 text-red-500': isFavorite }"></app-icon-heart> -->
+  </button>
+
+  <div class="p-4">
+    <div class="flex items-start space-x-3 mb-4">
+      <div class="h-16 w-16 rounded-full overflow-hidden">
+        <img [src]="performer.avatarUrl || '/placeholder.svg'" [alt]="performer.name"
+          class="h-full w-full object-cover" />
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2">
+          <h3 class="font-semibold text-lg truncate">{{ performer.name }}</h3>
+          @if (performer.isVerified) {
+          <!-- <app-icon-verified class="h-4 w-4 text-blue-500 flex-shrink-0"></app-icon-verified> -->
+          }
+        </div>
+        <div class="flex items-center text-sm text-muted-foreground mt-1">
+          <!-- <app-icon-map-pin class="h-3 w-3 mr-1"></app-icon-map-pin> -->
+          {{ performer.location }}
+        </div>
+        <div class="flex items-center text-sm text-muted-foreground">
+          <!-- <app-icon-calendar class="h-3 w-3 mr-1"></app-icon-calendar> -->
+          {{ performer.age }} years old
+        </div>
+      </div>
+    </div>
+
+    <p class="text-sm text-muted-foreground mb-4 line-clamp-2">
+      {{ performer.description }}
+    </p>
+
+    <div class="flex flex-wrap gap-1 mb-4">
+      @for (tag of performer.tags.slice(0, 3); track tag) {
+      <span class="badge text-xs">{{ tag }}</span>
+      }
+      @if (performer.tags.length > 3) {
+      <span class="badge text-xs">+{{ performer.tags.length - 3 }}</span>
+      }
+    </div>
+
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        @if (hasDiscount) {
+        <span class="text-lg font-bold text-green-600">{{ currentPrice | currency:'EUR':'symbol':'1.0-0' }}</span>
+        <span class="text-sm text-muted-foreground line-through">{{ performer.price | currency:'EUR':'symbol':'1.0-0'
+          }}</span>
+
+        } @else {
+        <span class="text-lg font-bold">{{ performer.price | currency:'EUR':'symbol':'1.0-0' }}</span>
+
+        }
+      </div>
+      <span class="text-xs text-muted-foreground">/month</span>
+    </div>
+  </div>
+
+  <div class="p-4 pt-0">
+    <button class="btn w-full" (click)="handleVisitProfile()">
+      <!-- <app-icon-external-link class="h-4 w-4 mr-2"></app-icon-external-link> -->
+      Visit Profile
+    </button>
+  </div>
+</div>
