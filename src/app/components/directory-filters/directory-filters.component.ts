@@ -11,7 +11,7 @@ import { FilterOptions } from '../../models/filter-options.model';
 @Component({
   selector: 'app-directory-filters',
   templateUrl: './directory-filters.component.html',
-  styles: ['./directory-filters.component.scss'],
+  styleUrls: ['./directory-filters.component.scss'],
   imports: [
     BadgeComponent, IconChevronDownComponent, IconFilterComponent, IconXComponent, IconSearchComponent
   ],
