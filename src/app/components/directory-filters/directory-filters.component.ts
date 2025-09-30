@@ -43,4 +43,8 @@ export class DirectoryFiltersComponent {
     const f = this.filters;
     return !!(f.search || f.tags.length || f.location || f.showDiscounted || f.minPrice > 0 || f.maxPrice < 50);
   }
+
+  getBadgeVariant(tag: string): 'default' | 'outline' {
+    return this.filters.tags.includes(tag) ? 'default' : 'outline';
+  }
 }

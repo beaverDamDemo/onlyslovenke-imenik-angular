@@ -102,10 +102,9 @@
           <label>Tags</label>
           <div class="flex flex-wrap gap-2">
             @for (tag of availableTags; track tag) {
-            <!-- <app-badge [variant]="filters.tags.includes(tag) ? 'default' : 'outline'" class="cursor-pointer"
-              (click)="handleTagToggle(tag)">
+            <app-badge [variant]="getBadgeVariant(tag)" class="cursor-pointer" (click)="handleTagToggle(tag)">
               {{ tag }}
-            </app-badge> -->
+            </app-badge>
             }
           </div>
         </div>

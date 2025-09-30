@@ -1,6 +1,5 @@
 <div class="min-h-screen flex flex-col">
   <div class="min-h-screen bg-background relative overflow-hidden">
-    <!-- Decorative shapes -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
       <div class="absolute top-20 left-10 w-32 h-32 theme-shape-1 rounded-full blur-xl"></div>
       <div class="absolute top-1/4 right-20 w-24 h-24 theme-shape-2 rotate-45 blur-lg"></div>
@@ -9,7 +8,6 @@
       <div class="absolute top-1/2 left-1/2 w-36 h-36 theme-shape-3 rounded-full blur-3xl"></div>
     </div>
 
-    <!-- Header -->
     <header class="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50 relative">
       <div class="container mx-auto px-4 py-4 flex items-center justify-between">
         <h1 class="text-2xl font-bold theme-gradient-text">Slovenian OF Directory</h1>
@@ -26,7 +24,6 @@
       </div>
     </header>
 
-    <!-- Navigation -->
     <nav class="border-b bg-card/30 backdrop-blur-sm relative">
       <div class="container mx-auto px-4">
         <div class="flex space-x-8">
@@ -48,12 +45,13 @@
             Add Performer
           </button>
 
-          <button *ngIf="authService.userRole === 'admin'"
-            [ngClass]="{ 'btn-default': activeTab === 'admin', 'btn-ghost': activeTab !== 'admin' }"
+          @if (authService.userRole === 'admin') {
+          <button [ngClass]="{ 'btn-default': activeTab === 'admin', 'btn-ghost': activeTab !== 'admin' }"
             class="btn btn-version-2" (click)="setActiveTab('admin')">
             <app-icon-shield class="h-4 w-4 mr-2"></app-icon-shield>
             Admin
           </button>
+          }
         </div>
       </div>
     </nav>
@@ -75,9 +73,7 @@
       <app-admin-dashboard></app-admin-dashboard>
       }
     </main>
-
   </div>
-
 
   <main class="flex-grow p-3">
     @if (loading) {
