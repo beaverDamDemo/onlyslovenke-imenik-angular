@@ -1,1 +1,96 @@
-<p>directory-filters works!</p>
+<div class="space-y-4">
+  <div class="relative">
+    <app-icon-search class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+    <input type="text" class="pl-10 input" placeholder="Search performers, tags, locations..." [value]="filters.search"
+      (input)="filtersChange.emit({ search: $any($event.target).value })" />
+  </div>
+
+  <div *ngIf="hasActiveFilters; else noFilters" class="flex flex-wrap items-center gap-2">
+    <span class="text-sm text-muted-foreground">Active filters:</span>
+
+    <app-badge *ngIf="filters.search" variant="secondary" class="gap-1">
+      Search: {{ filters.search }}
+      <app-icon-x class="h-3 w-3 cursor-pointer" (click)="filtersChange.emit({ search: '' })" />
+    </app-badge>
+
+    <app-badge *ngFor="let tag of filters.tags" variant="secondary" class="gap-1">
+      {{ tag }}
+      <app-icon-x class="h-3 w-3 cursor-pointer" (click)="removeTag(tag)" />
+    </app-badge>
+
+    <app-badge *ngIf="filters.location" variant="secondary" class="gap-1">
+      Location: {{ filters.location }}
+      <app-icon-x class="h-3 w-3 cursor-pointer" (click)="filtersChange.emit({ location: '' })" />
+    </app-badge>
+
+    <app-badge *ngIf="filters.showDiscounted" variant="secondary" class="gap-1">
+      Discounted only
+      <app-icon-x class="h-3 w-3 cursor-pointer" (click)="filtersChange.emit({ showDiscounted: false })" />
+    </app-badge>
+
+    <button class="btn btn-ghost btn-sm" (click)="clearFilters.emit()">Clear all</button>
+  </div>
+
+  <ng-template #noFilters></ng-template>
+
+  <div class="collapsible" [class.open]="isOpen">
+    <button class="btn btn-outline w-full justify-between bg-transparent" (click)="isOpen = !isOpen">
+      <div class="flex items-center gap-2">
+        <app-icon-filter class="h-4 w-4" />
+        Advanced Filters
+      </div>
+      <app-icon-chevron-down class="h-4 w-4" />
+    </button>
+
+    <div *ngIf="isOpen" class="card mt-4">
+      <div class="card-header">
+        <h3 class="text-lg">Filter Options</h3>
+      </div>
+      <div class="card-content space-y-6">
+        <div class="space-y-2">
+          <label>Sort By</label>
+          <select class="select" [value]="filters.sortBy"
+            (change)="filtersChange.emit({ sortBy: $any($event.target).value })">
+            <option value="popular">Most Popular</option>
+            <option value="newest">Newest</option>
+            <option value="name">Name (A-Z)</option>
+            <option value="price">Price (Low to High)</option>
+          </select>
+        </div>
+
+        <div class="space-y-3">
+          <label>Price Range: €{{ filters.minPrice }} - €{{ filters.maxPrice }}</label>
+          <input type="range" min="0" max="50" step="1" [value]="filters.minPrice"
+            (input)="filtersChange.emit({ minPrice: +$any($event.target).value })" />
+          <input type="range" min="0" max="50" step="1" [value]="filters.maxPrice"
+            (input)="filtersChange.emit({ maxPrice: +$any($event.target).value })" />
+        </div>
+
+        <div class="space-y-2">
+          <label>Location</label>
+          <select class="select" [value]="filters.location"
+            (change)="filtersChange.emit({ location: $any($event.target).value })">
+            <option value="all">All locations</option>
+            <option *ngFor="let location of availableLocations">{{ location }}</option>
+          </select>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <input type="checkbox" id="discounted" [checked]="filters.showDiscounted"
+            (change)="filtersChange.emit({ showDiscounted: $any($event.target).checked })" />
+          <label for="discounted">Show discounted only</label>
+        </div>
+
+        <div class="space-y-3">
+          <label>Tags</label>
+          <div class="flex flex-wrap gap-2">
+            <!-- <app-badge *ngFor="let tag of availableTags" [variant]="filters.tags.includes(tag) ? 'default' : 'outline'"
+              class="cursor-pointer" (click)="handleTagToggle(tag)">
+              {{ tag }}
+            </app-badge> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

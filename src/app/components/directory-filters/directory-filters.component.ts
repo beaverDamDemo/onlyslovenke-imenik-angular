@@ -1,11 +1,53 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { BadgeComponent } from '../badge/badge.component';
+import { IconChevronDownComponent } from '../icon-chevron-down/icon-chevron-down.component';
+import { IconFilterComponent } from '../icon-filter/icon-filter.component';
+import { IconXComponent } from '../icon-x/icon-x.component';
+import { IconSearchComponent } from '../icon-search/icon-search.component';
+
+export interface FilterOptions {
+  search: string;
+  tags: string[];
+  location: string;
+  showDiscounted: boolean;
+  minPrice: number;
+  maxPrice: number;
+  sortBy: 'popular' | 'newest' | 'name' | 'price';
+}
 
 @Component({
   selector: 'app-directory-filters',
-  imports: [],
   templateUrl: './directory-filters.component.html',
-  styleUrl: './directory-filters.component.scss'
+  styles: ['./directory-filters.component.scss'],
+  imports: [
+    BadgeComponent, IconChevronDownComponent, IconFilterComponent, IconXComponent, IconSearchComponent
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DirectoryFiltersComponent {
+  @Input() filters!: FilterOptions;
+  @Input() availableTags: string[] = [];
+  @Input() availableLocations: string[] = [];
 
+  @Output() filtersChange = new EventEmitter<Partial<FilterOptions>>();
+  @Output() clearFilters = new EventEmitter<void>();
+
+  isOpen = false;
+
+  handleTagToggle(tag: string) {
+    const tags = this.filters.tags.includes(tag)
+      ? this.filters.tags.filter(t => t !== tag)
+      : [...this.filters.tags, tag];
+    this.filtersChange.emit({ tags });
+  }
+
+  removeTag(tag: string) {
+    const tags = this.filters.tags.filter(t => t !== tag);
+    this.filtersChange.emit({ tags });
+  }
+
+  get hasActiveFilters(): boolean {
+    const f = this.filters;
+    return !!(f.search || f.tags.length || f.location || f.showDiscounted || f.minPrice > 0 || f.maxPrice < 50);
+  }
 }
