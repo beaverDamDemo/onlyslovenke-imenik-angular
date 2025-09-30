@@ -17,15 +17,17 @@
         {{ discountedPerformers.length }} Deals
       </span>
     </div>
-
   </div>
 
   <div class="w-full">
-    <div class="grid grid-cols-2 w-full">
-      <button [class.active]="activeTab === 'all'" (click)="setActiveTab('all')" class="btn-version-2">
+    <div
+      class="grid grid-cols-2 w-full bg-muted text-muted-foreground h-9 items-center justify-center rounded-lg p-[3px]">
+      <button [class.active]="activeTab === 'all'" (click)="setActiveTab('all')"
+        class="tab-toggle-button inline-flex items-center justify-center gap-2 px-3 py-0.5 text-sm font-medium rounded-md border border-transparent bg-muted text-muted-foreground hover:text-foreground transition-colors">
         All Performers
       </button>
-      <button [class.active]="activeTab === 'deals'" (click)="setActiveTab('deals')" class="btn-version-2">
+      <button [class.active]="activeTab === 'deals'" (click)="setActiveTab('deals')"
+        class="tab-toggle-button inline-flex items-center justify-center gap-2 px-3 py-0.5 text-sm font-medium rounded-md border border-transparent bg-muted text-muted-foreground hover:text-foreground transition-colors">
         Deals & Discounts ({{ discountedPerformers.length }})
       </button>
     </div>

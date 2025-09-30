@@ -150,6 +150,7 @@ export function filterPerformers(performers: Performer[], filters: FilterOptions
 @Component({
   selector: 'app-performer-directory',
   templateUrl: './performer-directory.component.html',
+  styleUrl: './performer-directory.component.scss',
   imports: [PerformerCardComponent, IconPercentComponent, DirectoryFiltersComponent, IconUsersComponent],
 })
 export class PerformerDirectoryComponent implements OnInit {

@@ -30,6 +30,11 @@ export class PerformerCardComponent implements OnInit {
   }
 
   handleFavoriteToggle(): void {
+    this.isFavorite = !this.isFavorite;
+    throw new Error('Not implemented yet');
+    /**
+     * ! not implemented yet
+     */
     if (!this.user) return;
 
     // if (this.isFavorite) {
