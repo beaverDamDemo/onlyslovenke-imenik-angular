@@ -3,6 +3,7 @@ import { PerformerCardComponent } from '../performer-card/performer-card.compone
 import { IconPercentComponent } from '../icon-percent/icon-percent.component';
 import { DirectoryFiltersComponent } from '../directory-filters/directory-filters.component';
 import { IconUsersComponent } from '../icon-users/icon-users.component';
+import { FilterOptions } from '../../models/filter-options.model';
 export interface Performer {
   id: number;
   name: string;
@@ -100,15 +101,7 @@ export function getAllLocations(performers: Performer[]): string[] {
   return Array.from(locationSet).sort();
 }
 
-export interface FilterOptions {
-  search: string;
-  minPrice: number;
-  maxPrice: number;
-  tags: string[];
-  location: string;
-  showDiscounted: boolean;
-  sortBy: 'popular' | 'priceLow' | 'priceHigh';
-}
+
 
 export function filterPerformers(performers: Performer[], filters: FilterOptions): Performer[] {
   let result = [...performers];
@@ -133,14 +126,18 @@ export function filterPerformers(performers: Performer[], filters: FilterOptions
   result = result.filter(p => p.price >= filters.minPrice && p.price <= filters.maxPrice);
 
   switch (filters.sortBy) {
-    case 'priceLow':
+    case 'price':
       result.sort((a, b) => a.price - b.price);
       break;
-    case 'priceHigh':
-      result.sort((a, b) => b.price - a.price);
+    case 'name':
+      result.sort((a, b) => a.name.localeCompare(b.name));
       break;
+    case 'newest':
+      result.sort((a, b) => b.id - a.id); // assuming higher ID = newer
+      break;
+    case 'popular':
     default:
-      result.sort((a, b) => a.id - b.id);
+      result.sort((a, b) => (b.popularityScore ?? 0) - (a.popularityScore ?? 0));
       break;
   }
 

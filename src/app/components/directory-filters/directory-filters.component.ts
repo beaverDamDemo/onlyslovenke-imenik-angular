@@ -4,16 +4,9 @@ import { IconChevronDownComponent } from '../icon-chevron-down/icon-chevron-down
 import { IconFilterComponent } from '../icon-filter/icon-filter.component';
 import { IconXComponent } from '../icon-x/icon-x.component';
 import { IconSearchComponent } from '../icon-search/icon-search.component';
+import { FilterOptions } from '../../models/filter-options.model';
 
-export interface FilterOptions {
-  search: string;
-  tags: string[];
-  location: string;
-  showDiscounted: boolean;
-  minPrice: number;
-  maxPrice: number;
-  sortBy: 'popular' | 'newest' | 'name' | 'price';
-}
+
 
 @Component({
   selector: 'app-directory-filters',
