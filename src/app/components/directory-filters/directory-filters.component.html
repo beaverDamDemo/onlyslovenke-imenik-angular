@@ -2,42 +2,50 @@
   <div class="relative">
     <app-icon-search class="absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
     <input type="text" placeholder="Search performers, tags, locations..." class="flex h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-colors outline-none
-           placeholder:text-muted-foreground file:text-foreground selection:bg-primary selection:text-primary-foreground
-           file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium
-           disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50
-           md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]
-           aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive
-           dark:bg-input/30 pl-12" [value]="filters.search"
+             placeholder:text-muted-foreground file:text-foreground selection:bg-primary selection:text-primary-foreground
+             file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium
+             disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50
+             md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]
+             aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive
+             dark:bg-input/30 pl-12" [value]="filters.search"
       (input)="filtersChange.emit({ search: $any($event.target).value })" />
   </div>
 
-  <div *ngIf="hasActiveFilters; else noFilters" class="flex flex-wrap items-center gap-2">
+  @if (hasActiveFilters) {
+  <div class="flex flex-wrap items-center gap-2">
     <span class="text-sm text-muted-foreground">Active filters:</span>
 
-    <app-badge *ngIf="filters.search" variant="secondary" class="gap-1">
+    @if (filters.search) {
+    <app-badge variant="secondary" class="gap-1">
       Search: {{ filters.search }}
       <app-icon-x class="h-3 w-3 cursor-pointer" (click)="filtersChange.emit({ search: '' })" />
     </app-badge>
+    }
 
-    <app-badge *ngFor="let tag of filters.tags" variant="secondary" class="gap-1">
+    @for (tag of filters.tags; track tag) {
+    <app-badge variant="secondary" class="gap-1">
       {{ tag }}
       <app-icon-x class="h-3 w-3 cursor-pointer" (click)="removeTag(tag)" />
     </app-badge>
+    }
 
-    <app-badge *ngIf="filters.location" variant="secondary" class="gap-1">
+    @if (filters.location) {
+    <app-badge variant="secondary" class="gap-1">
       Location: {{ filters.location }}
       <app-icon-x class="h-3 w-3 cursor-pointer" (click)="filtersChange.emit({ location: '' })" />
     </app-badge>
+    }
 
-    <app-badge *ngIf="filters.showDiscounted" variant="secondary" class="gap-1">
+    @if (filters.showDiscounted) {
+    <app-badge variant="secondary" class="gap-1">
       Discounted only
       <app-icon-x class="h-3 w-3 cursor-pointer" (click)="filtersChange.emit({ showDiscounted: false })" />
     </app-badge>
+    }
 
     <button class="btn btn-ghost btn-sm" (click)="clearFilters.emit()">Clear all</button>
   </div>
-
-  <ng-template #noFilters></ng-template>
+  }
 
   <div class="collapsible" [class.open]="isOpen">
     <button class="btn btn-outline w-full justify-between bg-transparent" (click)="isOpen = !isOpen">
@@ -48,7 +56,8 @@
       <app-icon-chevron-down class="h-4 w-4" />
     </button>
 
-    <div *ngIf="isOpen" class="card mt-4">
+    @if (isOpen) {
+    <div class="card mt-4">
       <div class="card-header">
         <h3 class="text-lg">Filter Options</h3>
       </div>
@@ -77,7 +86,9 @@
           <select class="select" [value]="filters.location"
             (change)="filtersChange.emit({ location: $any($event.target).value })">
             <option value="all">All locations</option>
-            <option *ngFor="let location of availableLocations">{{ location }}</option>
+            @for (location of availableLocations; track location) {
+            <option [value]="location">{{ location }}</option>
+            }
           </select>
         </div>
 
@@ -90,13 +101,16 @@
         <div class="space-y-3">
           <label>Tags</label>
           <div class="flex flex-wrap gap-2">
-            <!-- <app-badge *ngFor="let tag of availableTags" [variant]="filters.tags.includes(tag) ? 'default' : 'outline'"
-              class="cursor-pointer" (click)="handleTagToggle(tag)">
+            @for (tag of availableTags; track tag) {
+            <!-- <app-badge [variant]="filters.tags.includes(tag) ? 'default' : 'outline'" class="cursor-pointer"
+              (click)="handleTagToggle(tag)">
               {{ tag }}
             </app-badge> -->
+            }
           </div>
         </div>
       </div>
     </div>
+    }
   </div>
 </div>
