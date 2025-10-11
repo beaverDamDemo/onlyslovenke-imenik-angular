@@ -2,7 +2,10 @@
   class="group hover:shadow-lg transition-all duration-300 relative overflow-hidden rounded-xl border border-gray-300 bg-card text-card-foreground flex flex-col gap-6 py-6 shadow-sm">
   @if (showDealBadge && hasDiscount) {
   <div class="absolute top-2 left-2 z-10">
-    <span class="badge bg-gradient-to-r from-yellow-500 to-orange-500 text-white">DEAL</span>
+    <span data-slot="badge"
+      class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent bg-primary [a&]:hover:bg-primary/90 bg-gradient-to-r from-yellow-500 to-orange-500 text-white">
+      DEAL
+    </span>
   </div>
   }
 
@@ -16,8 +19,9 @@
   <div class="p-4">
     <div class="flex items-start space-x-3 mb-4">
       <div class="h-16 w-16 rounded-full overflow-hidden">
-        <img [src]="performer.avatarUrl || '/placeholder.svg'" [alt]="performer.name"
+        <img [src]="performer.avatarUrl || '/ladies/slovenian-woman-portrait.jpg'" [alt]="performer.name"
           class="h-full w-full object-cover" />
+
       </div>
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-2">
@@ -37,7 +41,7 @@
       </div>
     </div>
 
-    <p class="text-sm text-muted-foreground mb-4 line-clamp-2">
+    <p class="text-sm text-muted-foreground mb-4 line-clamp-3 leading-[1.5rem] min-h-[4.5rem]">
       {{ performer.description }}
     </p>
 

@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: './add-performer-form.component.html',
   styleUrl: './add-performer-form.component.scss'
 })
-export class AddPerformerFormComponent {
+export class AddContentCreatorFormComponent {
 
 }

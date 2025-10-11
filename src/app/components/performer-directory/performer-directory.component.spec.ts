@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PerformerDirectoryComponent } from './performer-directory.component';
+import { ContentCreatorDirectoryComponent } from './performer-directory.component';
 
-describe('PerformerDirectoryComponent', () => {
-  let component: PerformerDirectoryComponent;
-  let fixture: ComponentFixture<PerformerDirectoryComponent>;
+describe('ContentCreatorDirectoryComponent', () => {
+  let component: ContentCreatorDirectoryComponent;
+  let fixture: ComponentFixture<ContentCreatorDirectoryComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PerformerDirectoryComponent]
+      imports: [ContentCreatorDirectoryComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
-    fixture = TestBed.createComponent(PerformerDirectoryComponent);
+    fixture = TestBed.createComponent(ContentCreatorDirectoryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

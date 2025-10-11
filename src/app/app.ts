@@ -18,14 +18,14 @@ import { IconPaletteComponent } from './components/icon-palette/icon-palette.com
 import { IconUsersComponent } from './components/icon-users/icon-users.component';
 import { IconPlusComponent } from './components/icon-plus/icon-plus.component';
 import { IconShieldComponent } from './components/icon-shield/icon-shield.component';
-import { PerformerDirectoryComponent } from './components/performer-directory/performer-directory.component';
+import { ContentCreatorDirectoryComponent } from './components/performer-directory/performer-directory.component';
 import { FavoritesViewComponent } from './components/favorites-view/favorites-view.component';
-import { AddPerformerFormComponent } from './components/add-performer-form/add-performer-form.component';
+import { AddContentCreatorFormComponent } from './components/add-performer-form/add-performer-form.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, RouterModule, MatToolbarModule, MatDividerModule, MatButtonModule, MatIconModule, MatProgressBarModule, ThemeToggleComponent, IconLogOutComponent, IconHeartComponent, IconUsersComponent, IconPlusComponent, IconShieldComponent, PerformerDirectoryComponent, FavoritesViewComponent, AddPerformerFormComponent, AdminDashboardComponent
+  imports: [CommonModule, RouterOutlet, RouterModule, MatToolbarModule, MatDividerModule, MatButtonModule, MatIconModule, MatProgressBarModule, ThemeToggleComponent, IconLogOutComponent, IconHeartComponent, IconUsersComponent, IconPlusComponent, IconShieldComponent, ContentCreatorDirectoryComponent, FavoritesViewComponent, AddContentCreatorFormComponent, AdminDashboardComponent
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddPerformerFormComponent } from './add-performer-form.component';
+import { AddContentCreatorFormComponent } from './add-performer-form.component';
 
-describe('AddPerformerFormComponent', () => {
-  let component: AddPerformerFormComponent;
-  let fixture: ComponentFixture<AddPerformerFormComponent>;
+describe('AddContentCreatorFormComponent', () => {
+  let component: AddContentCreatorFormComponent;
+  let fixture: ComponentFixture<AddContentCreatorFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddPerformerFormComponent]
+      imports: [AddContentCreatorFormComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
-    fixture = TestBed.createComponent(AddPerformerFormComponent);
+    fixture = TestBed.createComponent(AddContentCreatorFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

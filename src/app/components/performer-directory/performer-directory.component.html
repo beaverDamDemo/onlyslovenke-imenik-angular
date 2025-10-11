@@ -1,19 +1,19 @@
 <div class="space-y-6">
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-3xl font-bold theme-gradient-text">Performer Directory</h1>
+      <h1 class="text-3xl font-bold theme-gradient-text">ContentCreator Directory</h1>
       <p class="text-muted-foreground mt-2">Discover amazing Slovenian OnlyFans creators</p>
     </div>
     <div class="flex items-center gap-4">
       <span
         class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-sm font-medium bg-secondary text-secondary-foreground">
         <app-icon-users class="h-4 w-4"></app-icon-users>
-        {{ performers.length }} Performers
+        {{ contentCreators.length }} ContentCreators
       </span>
       <span
         class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-sm font-medium bg-secondary text-secondary-foreground">
         <app-icon-percent class="h-4 w-4"></app-icon-percent>
-        {{ discountedPerformers.length }} Deals
+        {{ discountedContentCreators.length }} Deals
       </span>
     </div>
   </div>
@@ -23,11 +23,11 @@
       class="grid grid-cols-2 w-full bg-muted text-muted-foreground h-9 items-center justify-center rounded-lg p-[3px]">
       <button [class.active]="activeTab === 'all'" (click)="setActiveTab('all')"
         class="tab-toggle-button inline-flex items-center justify-center gap-2 px-3 py-0.5 text-sm font-medium rounded-md border border-transparent bg-muted text-muted-foreground hover:text-foreground transition-colors">
-        All Performers
+        All ContentCreators
       </button>
       <button [class.active]="activeTab === 'deals'" (click)="setActiveTab('deals')"
         class="tab-toggle-button inline-flex items-center justify-center gap-2 px-3 py-0.5 text-sm font-medium rounded-md border border-transparent bg-muted text-muted-foreground hover:text-foreground transition-colors">
-        Deals & Discounts ({{ discountedPerformers.length }})
+        Deals & Discounts ({{ discountedContentCreators.length }})
       </button>
     </div>
 
@@ -40,23 +40,23 @@
       <div class="space-y-4">
         <div class="flex items-center justify-between">
           <p class="text-sm text-muted-foreground">
-            Showing {{ filteredPerformers.length }} of {{ performers.length }} performers
+            Showing {{ filteredContentCreators.length }} of {{ contentCreators.length }} contentCreators
           </p>
           @if (filters.search || filters.tags.length || filters.location || filters.showDiscounted) {
           <button class="btn-outline btn-sm" (click)="clearFilters()">Clear Filters</button>
           }
         </div>
 
-        @if (filteredPerformers.length === 0) {
+        @if (filteredContentCreators.length === 0) {
         <div class="text-center py-12">
-          <p class="text-muted-foreground">No performers found matching your criteria.</p>
+          <p class="text-muted-foreground">No contentCreators found matching your criteria.</p>
           <button class="btn-outline mt-4" (click)="clearFilters()">Clear Filters</button>
         </div>
         }
 
-        @if (filteredPerformers.length > 0) {
+        @if (filteredContentCreators.length > 0) {
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          @for (performer of filteredPerformers; track performer.id) {
+          @for (performer of filteredContentCreators; track performer.id) {
           <app-performer-card [performer]="performer"></app-performer-card>
           }
         </div>
@@ -74,16 +74,16 @@
         </p>
       </div>
 
-      @if (discountedPerformers.length === 0) {
+      @if (discountedContentCreators.length === 0) {
       <div class="text-center py-12">
         <p class="text-muted-foreground">No special deals available at the moment.</p>
         <p class="text-sm text-muted-foreground mt-2">Check back later for new offers!</p>
       </div>
       }
 
-      @if (filteredPerformers.length > 0) {
+      @if (filteredContentCreators.length > 0) {
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        @for (performer of filteredPerformers; track performer.id) {
+        @for (performer of filteredContentCreators; track performer.id) {
         <app-performer-card [performer]="performer" [showDealBadge]="true"></app-performer-card>
         }
       </div>

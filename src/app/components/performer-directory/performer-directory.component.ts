@@ -1,99 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { PerformerCardComponent } from '../performer-card/performer-card.component';
+import { ContentCreatorCardComponent } from '../performer-card/performer-card.component';
 import { IconPercentComponent } from '../icon-percent/icon-percent.component';
 import { DirectoryFiltersComponent } from '../directory-filters/directory-filters.component';
 import { IconUsersComponent } from '../icon-users/icon-users.component';
 import { FilterOptions } from '../../models/filter-options.model';
-export interface Performer {
-  id: number;
-  name: string;
-  avatarUrl: string;
-  tags: string[];
-  description: string;
-  location?: string;
-  price: number;
-  discount?: number;
-  discountPrice?: number;
-  isDiscounted?: boolean;
-  popularityScore?: number;
-  age?: number;
-  onlyfansUrl: string;
-  isVerified?: boolean;
-}
-export const dataStore = {
-  getPerformers(): Performer[] {
-    return [
-      {
-        id: 1,
-        name: 'Lana Luxe',
-        avatarUrl: 'slovenian-woman-portrait-blonde.jpg',
-        description: 'Fitness enthusiast with a love for ink.',
-        location: 'Ljubljana',
-        tags: ['fitness', 'tattoos'],
-        price: 25,
-        onlyfansUrl: 'https://onlyfans.com/lanaluxe',
-        age: 28,
-        isVerified: true,
-      },
-      {
-        id: 2,
-        name: 'Maja Moon',
-        avatarUrl: 'slovenian-woman-portrait-brunette.jpg',
-        description: 'Cosplayer and gamer girl with a playful vibe.',
-        location: 'Maribor',
-        tags: ['cosplay', 'gaming'],
-        price: 30,
-        discount: 10,
-        discountPrice: 27,
-        isDiscounted: true,
-        onlyfansUrl: 'https://onlyfans.com/majamoon',
-        age: 25,
-        isVerified: false,
-      },
-      {
-        id: 3,
-        name: 'Nina Noir',
-        avatarUrl: 'slovenian-woman-portrait-dark-hair.jpg',
-        description: 'Fashion-forward creator with a bold aesthetic.',
-        location: 'Koper',
-        tags: ['fashion', 'makeup'],
-        price: 45,
-        onlyfansUrl: 'https://onlyfans.com/ninanoir',
-        age: 30,
-        isVerified: true,
-      },
-      {
-        id: 4,
-        name: 'Eva Ember',
-        avatarUrl: 'slovenian-woman-portrait-redhead.jpg',
-        description: 'Alternative style and fiery personality.',
-        location: 'Ljubljana',
-        tags: ['tattoos', 'alt'],
-        price: 20,
-        discount: 5,
-        discountPrice: 19,
-        isDiscounted: true,
-        onlyfansUrl: 'https://onlyfans.com/evaember',
-        age: 26,
-        isVerified: false,
-      },
-    ];
-  },
+import { ContentCreator } from '../../models/content-creator.model';
+import { ContentCreatorService } from '../../services/content-creator.service';
 
-  getDiscountedPerformers(): Performer[] {
-    return this.getPerformers().filter(p => p.isDiscounted);
-  },
-};
-
-export function getAllTags(performers: Performer[]): string[] {
+export function getAllTags(contentCreators: ContentCreator[]): string[] {
   const tagSet = new Set<string>();
-  performers.forEach(p => p.tags.forEach(tag => tagSet.add(tag)));
+  contentCreators.forEach(p => p.tags.forEach(tag => tagSet.add(tag)));
   return Array.from(tagSet).sort();
 }
 
-export function getAllLocations(performers: Performer[]): string[] {
+export function getAllLocations(contentCreators: ContentCreator[]): string[] {
   const locationSet = new Set<string>();
-  performers.forEach(p => {
+  contentCreators.forEach(p => {
     if (p.location) {
       locationSet.add(p.location);
     }
@@ -101,10 +23,8 @@ export function getAllLocations(performers: Performer[]): string[] {
   return Array.from(locationSet).sort();
 }
 
-
-
-export function filterPerformers(performers: Performer[], filters: FilterOptions): Performer[] {
-  let result = [...performers];
+export function filterContentCreators(contentCreators: ContentCreator[], filters: FilterOptions): ContentCreator[] {
+  let result = [...contentCreators];
 
   if (filters.search) {
     const query = filters.search.toLowerCase();
@@ -125,6 +45,7 @@ export function filterPerformers(performers: Performer[], filters: FilterOptions
 
   result = result.filter(p => p.price >= filters.minPrice && p.price <= filters.maxPrice);
 
+
   switch (filters.sortBy) {
     case 'price':
       result.sort((a, b) => a.price - b.price);
@@ -133,7 +54,11 @@ export function filterPerformers(performers: Performer[], filters: FilterOptions
       result.sort((a, b) => a.name.localeCompare(b.name));
       break;
     case 'newest':
-      result.sort((a, b) => b.id - a.id); // assuming higher ID = newer
+      result.sort((a, b) => {
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return dateB - dateA;
+      });
       break;
     case 'popular':
     default:
@@ -148,12 +73,12 @@ export function filterPerformers(performers: Performer[], filters: FilterOptions
   selector: 'app-performer-directory',
   templateUrl: './performer-directory.component.html',
   styleUrl: './performer-directory.component.scss',
-  imports: [PerformerCardComponent, IconPercentComponent, DirectoryFiltersComponent, IconUsersComponent],
+  imports: [ContentCreatorCardComponent, IconPercentComponent, DirectoryFiltersComponent, IconUsersComponent],
 })
-export class PerformerDirectoryComponent implements OnInit {
-  performers: Performer[] = [];
-  filteredPerformers: Performer[] = [];
-  discountedPerformers: Performer[] = [];
+export class ContentCreatorDirectoryComponent implements OnInit {
+  contentCreators: ContentCreator[] = [];
+  filteredContentCreators: ContentCreator[] = [];
+  discountedContentCreators: ContentCreator[] = [];
   availableTags: string[] = [];
   availableLocations: string[] = [];
   activeTab: 'all' | 'deals' = 'all';
@@ -168,20 +93,20 @@ export class PerformerDirectoryComponent implements OnInit {
     sortBy: 'popular',
   };
 
+  constructor(private contentCreatorService: ContentCreatorService) { }
+
   ngOnInit(): void {
-    const allPerformers = dataStore.getPerformers();
-    const discounted = dataStore.getDiscountedPerformers();
-
-    this.performers = allPerformers;
-    this.discountedPerformers = discounted;
-    this.availableTags = getAllTags(allPerformers);
-    this.availableLocations = getAllLocations(allPerformers);
-
-    this.applyFilters();
+    this.contentCreatorService.getAllCreators().subscribe(creators => {
+      this.contentCreators = creators;
+      this.discountedContentCreators = creators.filter(c => c.isDiscounted);
+      this.availableTags = getAllTags(creators);
+      this.availableLocations = getAllLocations(creators);
+      this.applyFilters();
+    });
   }
 
   applyFilters(): void {
-    this.filteredPerformers = filterPerformers(this.performers, this.filters);
+    this.filteredContentCreators = filterContentCreators(this.contentCreators, this.filters);
   }
 
   handleFiltersChange(newFilters: Partial<FilterOptions>): void {

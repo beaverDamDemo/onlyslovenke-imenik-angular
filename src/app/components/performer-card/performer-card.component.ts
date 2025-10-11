@@ -1,20 +1,20 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { Performer } from '../performer-directory/performer-directory.component';
 import { IconHeartComponent } from '../icon-heart/icon-heart.component';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { IconMapPinComponent } from '../icon-map-pin/icon-map-pin.component';
 import { IconCalendarComponent } from '../icon-calendar/icon-calendar.component';
 import { IconVerifiedComponent } from '../icon-verified/icon-verified.component';
 import { IconExternalLinkComponent } from '../icon-external-link/icon-external-link.component';
+import { ContentCreator } from '../../models/content-creator.model';
 
 @Component({
   selector: 'app-performer-card',
   templateUrl: './performer-card.component.html',
   imports: [IconHeartComponent, CurrencyPipe, IconExternalLinkComponent, IconMapPinComponent, IconCalendarComponent, IconVerifiedComponent, CommonModule]
 })
-export class PerformerCardComponent implements OnInit {
-  @Input() performer!: Performer;
+export class ContentCreatorCardComponent implements OnInit {
+  @Input() performer!: ContentCreator;
   @Input() showDealBadge = false;
 
   isFavorite = false;

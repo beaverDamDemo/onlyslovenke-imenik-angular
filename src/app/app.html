@@ -42,7 +42,7 @@
           <button [ngClass]="{ 'btn-default': activeTab === 'add', 'btn-ghost': activeTab !== 'add' }"
             class="btn btn-version-2" (click)="setActiveTab('add')">
             <app-icon-plus class="h-4 w-4 mr-2"></app-icon-plus>
-            Add Performer
+            Add Content Creator
           </button>
 
           @if (authService.userRole === 'admin') {
