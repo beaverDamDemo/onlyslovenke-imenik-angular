@@ -8,12 +8,12 @@
       <span
         class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-sm font-medium bg-secondary text-secondary-foreground">
         <app-icon-users class="h-4 w-4"></app-icon-users>
-        {{ contentCreators.length }} ContentCreators
+        {{ contentCreatorsSig().length }} ContentCreators
       </span>
       <span
         class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-sm font-medium bg-secondary text-secondary-foreground">
         <app-icon-percent class="h-4 w-4"></app-icon-percent>
-        {{ discountedContentCreators.length }} Deals
+        {{ discountedContentCreatorsSig().length }} Deals
       </span>
     </div>
   </div>
@@ -21,42 +21,43 @@
   <div class="w-full">
     <div
       class="grid grid-cols-2 w-full bg-muted text-muted-foreground h-9 items-center justify-center rounded-lg p-[3px]">
-      <button [class.active]="activeTab === 'all'" (click)="setActiveTab('all')"
+      <button [class.active]="activeTabSig() === 'all'" (click)="setActiveTab('all')"
         class="tab-toggle-button inline-flex items-center justify-center gap-2 px-3 py-0.5 text-sm font-medium rounded-md border border-transparent bg-muted text-muted-foreground hover:text-foreground transition-colors">
         All ContentCreators
       </button>
-      <button [class.active]="activeTab === 'deals'" (click)="setActiveTab('deals')"
+      <button [class.active]="activeTabSig() === 'deals'" (click)="setActiveTab('deals')"
         class="tab-toggle-button inline-flex items-center justify-center gap-2 px-3 py-0.5 text-sm font-medium rounded-md border border-transparent bg-muted text-muted-foreground hover:text-foreground transition-colors">
-        Deals & Discounts ({{ discountedContentCreators.length }})
+        Deals & Discounts ({{ discountedContentCreatorsSig().length }})
       </button>
     </div>
 
-    @if (activeTab === 'all') {
+    @if (activeTabSig() === 'all') {
     <div class="space-y-6">
-      <app-directory-filters [filters]="filters" [availableTags]="availableTags"
-        [availableLocations]="availableLocations" (filtersChange)="handleFiltersChange($event)"
+      <app-directory-filters [filters]="filtersSig()" [availableTags]="availableTagsSig()"
+        [availableLocations]="availableLocationsSig()" (filtersChange)="handleFiltersChange($event)"
         (clearFilters)="clearFilters()"></app-directory-filters>
 
       <div class="space-y-4">
         <div class="flex items-center justify-between">
           <p class="text-sm text-muted-foreground">
-            Showing {{ filteredContentCreators.length }} of {{ contentCreators.length }} contentCreators
+            Showing {{ filteredContentCreatorsSig().length }} of {{ contentCreatorsSig().length }} contentCreators
           </p>
-          @if (filters.search || filters.tags.length || filters.location || filters.showDiscounted) {
+          @if (filtersSig().search || filtersSig().tags.length || filtersSig().location || filtersSig().showDiscounted)
+          {
           <button class="btn-outline btn-sm" (click)="clearFilters()">Clear Filters</button>
           }
         </div>
 
-        @if (filteredContentCreators.length === 0) {
+        @if (filteredContentCreatorsSig().length === 0) {
         <div class="text-center py-12">
           <p class="text-muted-foreground">No contentCreators found matching your criteria.</p>
           <button class="btn-outline mt-4" (click)="clearFilters()">Clear Filters</button>
         </div>
         }
 
-        @if (filteredContentCreators.length > 0) {
+        @if (filteredContentCreatorsSig().length > 0) {
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          @for (performer of filteredContentCreators; track performer.id) {
+          @for (performer of filteredContentCreatorsSig(); track performer.id) {
           <app-performer-card [performer]="performer"></app-performer-card>
           }
         </div>
@@ -65,7 +66,7 @@
     </div>
     }
 
-    @if (activeTab === 'deals') {
+    @if (activeTabSig() === 'deals') {
     <div class="space-y-6">
       <div class="bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg p-6 border">
         <h2 class="text-xl font-semibold mb-2">Special Deals & Discounts</h2>
@@ -74,16 +75,16 @@
         </p>
       </div>
 
-      @if (discountedContentCreators.length === 0) {
+      @if (discountedContentCreatorsSig().length === 0) {
       <div class="text-center py-12">
         <p class="text-muted-foreground">No special deals available at the moment.</p>
         <p class="text-sm text-muted-foreground mt-2">Check back later for new offers!</p>
       </div>
       }
 
-      @if (filteredContentCreators.length > 0) {
+      @if (filteredContentCreatorsSig().length > 0) {
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        @for (performer of filteredContentCreators; track performer.id) {
+        @for (performer of filteredContentCreatorsSig(); track performer.id) {
         <app-performer-card [performer]="performer" [showDealBadge]="true"></app-performer-card>
         }
       </div>

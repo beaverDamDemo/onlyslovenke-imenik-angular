@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { ContentCreatorCardComponent } from '../performer-card/performer-card.component';
 import { IconPercentComponent } from '../icon-percent/icon-percent.component';
 import { DirectoryFiltersComponent } from '../directory-filters/directory-filters.component';
@@ -45,7 +45,6 @@ export function filterContentCreators(contentCreators: ContentCreator[], filters
 
   result = result.filter(p => p.price >= filters.minPrice && p.price <= filters.maxPrice);
 
-
   switch (filters.sortBy) {
     case 'price':
       result.sort((a, b) => a.price - b.price);
@@ -74,16 +73,11 @@ export function filterContentCreators(contentCreators: ContentCreator[], filters
   templateUrl: './performer-directory.component.html',
   styleUrl: './performer-directory.component.scss',
   imports: [ContentCreatorCardComponent, IconPercentComponent, DirectoryFiltersComponent, IconUsersComponent],
+  standalone: true
 })
 export class ContentCreatorDirectoryComponent implements OnInit {
-  contentCreators: ContentCreator[] = [];
-  filteredContentCreators: ContentCreator[] = [];
-  discountedContentCreators: ContentCreator[] = [];
-  availableTags: string[] = [];
-  availableLocations: string[] = [];
-  activeTab: 'all' | 'deals' = 'all';
-
-  filters: FilterOptions = {
+  contentCreatorsSig = signal<ContentCreator[]>([]);
+  filtersSig = signal<FilterOptions>({
     search: '',
     minPrice: 0,
     maxPrice: 50,
@@ -91,31 +85,40 @@ export class ContentCreatorDirectoryComponent implements OnInit {
     location: '',
     showDiscounted: false,
     sortBy: 'popular',
-  };
+  });
+
+  activeTabSig = signal<'all' | 'deals'>('all');
+
+  filteredContentCreatorsSig = computed(() =>
+    filterContentCreators(this.contentCreatorsSig(), this.filtersSig())
+  );
+
+  discountedContentCreatorsSig = computed(() =>
+    this.contentCreatorsSig().filter(c => c.isDiscounted)
+  );
+
+  availableTagsSig = computed(() =>
+    getAllTags(this.contentCreatorsSig())
+  );
+
+  availableLocationsSig = computed(() =>
+    getAllLocations(this.contentCreatorsSig())
+  );
 
   constructor(private contentCreatorService: ContentCreatorService) { }
 
   ngOnInit(): void {
     this.contentCreatorService.getAllCreators().subscribe(creators => {
-      this.contentCreators = creators;
-      this.discountedContentCreators = creators.filter(c => c.isDiscounted);
-      this.availableTags = getAllTags(creators);
-      this.availableLocations = getAllLocations(creators);
-      this.applyFilters();
+      this.contentCreatorsSig.set(creators);
     });
   }
 
-  applyFilters(): void {
-    this.filteredContentCreators = filterContentCreators(this.contentCreators, this.filters);
-  }
-
   handleFiltersChange(newFilters: Partial<FilterOptions>): void {
-    this.filters = { ...this.filters, ...newFilters };
-    this.applyFilters();
+    this.filtersSig.update(current => ({ ...current, ...newFilters }));
   }
 
   clearFilters(): void {
-    this.filters = {
+    this.filtersSig.set({
       search: '',
       minPrice: 0,
       maxPrice: 50,
@@ -123,11 +126,10 @@ export class ContentCreatorDirectoryComponent implements OnInit {
       location: '',
       showDiscounted: false,
       sortBy: 'popular',
-    };
-    this.applyFilters();
+    });
   }
 
   setActiveTab(tab: 'all' | 'deals'): void {
-    this.activeTab = tab;
+    this.activeTabSig.set(tab);
   }
 }
