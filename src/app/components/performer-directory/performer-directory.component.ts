@@ -6,6 +6,8 @@ import { IconUsersComponent } from '../icon-users/icon-users.component';
 import { FilterOptions } from '../../models/filter-options.model';
 import { ContentCreator } from '../../models/content-creator.model';
 import { ContentCreatorService } from '../../services/content-creator.service';
+import { IconListComponent } from '../icon-list/icon-list.component';
+import { IconGridComponent } from '../icon-grid/icon-grid.component';
 
 export function getAllTags(contentCreators: ContentCreator[]): string[] {
   const tagSet = new Set<string>();
@@ -72,7 +74,7 @@ export function filterContentCreators(contentCreators: ContentCreator[], filters
   selector: 'app-performer-directory',
   templateUrl: './performer-directory.component.html',
   styleUrl: './performer-directory.component.scss',
-  imports: [ContentCreatorCardComponent, IconPercentComponent, DirectoryFiltersComponent, IconUsersComponent],
+  imports: [ContentCreatorCardComponent, IconPercentComponent, DirectoryFiltersComponent, IconUsersComponent, IconListComponent, IconGridComponent],
   standalone: true
 })
 export class ContentCreatorDirectoryComponent implements OnInit {
@@ -104,6 +106,9 @@ export class ContentCreatorDirectoryComponent implements OnInit {
   availableLocationsSig = computed(() =>
     getAllLocations(this.contentCreatorsSig())
   );
+  isRowLayout = false;
+
+
 
   constructor(private contentCreatorService: ContentCreatorService) { }
 
@@ -131,5 +136,9 @@ export class ContentCreatorDirectoryComponent implements OnInit {
 
   setActiveTab(tab: 'all' | 'deals'): void {
     this.activeTabSig.set(tab);
+  }
+
+  toggleLayout() {
+    this.isRowLayout = !this.isRowLayout;
   }
 }

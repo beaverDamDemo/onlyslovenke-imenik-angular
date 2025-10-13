@@ -1,0 +1,4 @@
+- slo localization
+- purple hover or heart icon
+- advanced filters layout
+- replace font or maybe add another font for title

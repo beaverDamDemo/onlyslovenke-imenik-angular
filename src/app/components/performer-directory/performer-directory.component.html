@@ -46,6 +46,14 @@
           {
           <button class="btn-outline btn-sm" (click)="clearFilters()">Clear Filters</button>
           }
+          <button (click)="toggleLayout()" class="btn btn-sm btn-default flex items-center gap-2 p-1">
+            @if (isRowLayout) {
+            <app-icon-list></app-icon-list>
+            }
+            @else {
+            <app-icon-grid></app-icon-grid>
+            }
+          </button>
         </div>
 
         @if (filteredContentCreatorsSig().length === 0) {
@@ -56,11 +64,20 @@
         }
 
         @if (filteredContentCreatorsSig().length > 0) {
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        @if(isRowLayout) {
+        <div class="flex flex-col gap-4">
           @for (performer of filteredContentCreatorsSig(); track performer.id) {
-          <app-performer-card [performer]="performer"></app-performer-card>
+          <app-performer-card [performer]="performer" layout="row"></app-performer-card>
           }
         </div>
+        }
+        @if(!isRowLayout) {
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          @for (performer of filteredContentCreatorsSig(); track performer.id) {
+          <app-performer-card [performer]="performer" layout="card"></app-performer-card>
+          }
+        </div>
+        }
         }
       </div>
     </div>
@@ -83,11 +100,20 @@
       }
 
       @if (filteredContentCreatorsSig().length > 0) {
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      @if(isRowLayout) {
+      <div class="flex flex-col gap-4">
         @for (performer of filteredContentCreatorsSig(); track performer.id) {
-        <app-performer-card [performer]="performer" [showDealBadge]="true"></app-performer-card>
+        <app-performer-card [performer]="performer" [showDealBadge]="true" layout="row"></app-performer-card>
         }
       </div>
+      }
+      @if(!isRowLayout) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        @for (performer of filteredContentCreatorsSig(); track performer.id) {
+        <app-performer-card [performer]="performer" [showDealBadge]="true" layout="card"></app-performer-card>
+        }
+      </div>
+      }
       }
     </div>
     }

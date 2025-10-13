@@ -1,3 +1,77 @@
+@if(layout === 'row') {
+
+
+<div
+  class="group hover:shadow-md transition-all duration-300 relative overflow-hidden rounded-lg border border-gray-200 bg-card text-card-foreground flex flex-row items-center gap-4 px-4 py-3 shadow-sm w-full max-w-full">
+
+  @if (showDealBadge && hasDiscount) {
+  <span
+    class="absolute top-2 left-2 z-10 rounded-md px-2 py-0.5 text-xs font-medium bg-gradient-to-r from-yellow-500 to-orange-500 text-white">
+    DEAL
+  </span>
+  }
+
+  <div class="h-12 w-12 rounded-full overflow-hidden flex-shrink-0">
+    <img [src]="performer.avatarUrl || '/ladies/slovenian-woman-portrait.jpg'" [alt]="performer.name"
+      class="h-full w-full object-cover" />
+  </div>
+
+  <div class="flex-1 min-w-0 flex flex-row items-center gap-4 flex-wrap">
+
+    <div class="flex items-center gap-1">
+      <h3 class="font-semibold text-sm truncate">{{ performer.name }}</h3>
+      @if (performer.isVerified) {
+      <app-icon-verified class="h-3 w-3 text-blue-500"></app-icon-verified>
+      }
+    </div>
+
+    <button class="top-2 right-2 z-10 cursor-pointer hover:scale-110 transition-transform duration-200"
+      (click)="handleFavoriteToggle()">
+      <app-icon-heart class="h-4 w-4 transition-colors duration-200"
+        [ngClass]="isFavorite ? 'text-red-600 fill-red-600' : 'text-black fill-black dark:text-white dark:fill-white'">
+      </app-icon-heart>
+    </button>
+
+    <div class="inline-flex items-center gap-1 text-xs text-muted-foreground">
+      <app-icon-map-pin class="h-3 w-3"></app-icon-map-pin>
+      <span>{{ performer.location || '??' }}</span>
+    </div>
+    <div class="text-xs text-muted-foreground">
+      {{ performer.age || '??' }} yrs
+    </div>
+
+    <p class="text-xs text-muted-foreground line-clamp-1 max-w-[200px]">{{ performer.description }}</p>
+
+    <div class="flex gap-1 flex-wrap">
+      @for (tag of performer.tags.slice(0, 3); track tag) {
+      <span class="rounded-md px-2 py-0.5 text-[10px] font-medium bg-secondary text-secondary-foreground">
+        {{ tag }}
+      </span>
+      }
+      @if (performer.tags.length > 3) {
+      <span class="text-[10px] text-muted-foreground">+{{ performer.tags.length - 3 }}</span>
+      }
+    </div>
+  </div>
+
+  <div class="inline-flex items-center gap-3 ml-auto text-right">
+    <div class="inline-flex items-center gap-1">
+      @if (hasDiscount) {
+      <span class="text-sm font-bold text-green-600">{{ currentPrice | currency:'EUR':'symbol':'1.0-0' }}</span>
+      <span class="text-xs text-muted-foreground line-through">{{ performer.price | currency:'EUR':'symbol':'1.0-0'
+        }}</span>
+      } @else {
+      <span class="text-sm font-bold">{{ performer.price | currency:'EUR':'symbol':'1.0-0' }}</span>
+      }
+    </div>
+    <span class="text-[10px] text-muted-foreground">/month</span>
+    <button class="btn btn-xs btn-default btn-version-2 btn-rounded" (click)="handleVisitProfile()">
+      <app-icon-external-link class="h-3 w-3 mr-1"></app-icon-external-link>
+      Visit
+    </button>
+  </div>
+</div>
+} @else {
 <div
   class="group hover:shadow-lg transition-all duration-300 relative overflow-hidden rounded-xl border border-gray-300 bg-card text-card-foreground flex flex-col gap-6 py-6 shadow-sm">
   @if (showDealBadge && hasDiscount) {
@@ -79,3 +153,4 @@
     </button>
   </div>
 </div>
+}

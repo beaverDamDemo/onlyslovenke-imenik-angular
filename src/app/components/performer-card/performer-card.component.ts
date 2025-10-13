@@ -16,6 +16,7 @@ import { ContentCreator } from '../../models/content-creator.model';
 export class ContentCreatorCardComponent implements OnInit {
   @Input() performer!: ContentCreator;
   @Input() showDealBadge = false;
+  @Input() layout: 'card' | 'row' = 'card';
 
   isFavorite = false;
   user: any;
